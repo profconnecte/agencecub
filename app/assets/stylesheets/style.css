@@ -1,4 +1,7 @@
 body {
+    display: flex;
+	min-height: 100vh;
+	flex-direction: column;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -27,10 +30,12 @@ nav ul {
   }
 
 main {
-    padding: 20px;
+    flex: 1;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
-.container {
+.container-card {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
@@ -54,17 +59,20 @@ main {
     height: 150px; /* Fixez la hauteur des images à 150 pixels (ou la valeur de votre choix) */
 }
 
+.container-agence {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+}
 
-.card:last-child {
-    margin-bottom: 60px; /* Ajoutez une marge en bas à la dernière carte pour éviter que le footer la recouvre */
-}  
+.image {
+    height: 60vh; /* Fixez la hauteur des images à 60% du viewport */
+  }
 
 footer {
     background-color: #333;
     color: #fff;
     text-align: center;
-    padding: 10px;
-    position: fixed;
-    bottom: 0;
     width: 100%;
 }

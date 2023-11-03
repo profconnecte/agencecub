@@ -3,6 +3,6 @@ class ApplicationController < ActionController::Base
     
     protected
     def build_navbar
-        @agences = Agence.all
+        @agences_nav = Agence.all
     end
 end

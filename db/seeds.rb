@@ -11,68 +11,81 @@
 # db/seeds.rb
 
 # Agences
+# Agences
 Agence.create(
   nom: 'Anvers',
   adresseip: '192.36.253.10',
   role: 'agence',
-  image: 'anvers.jpg'
+  image: 'anvers.jpg',
+  url: 'www.anvers.cub.org'
 )
 
 Agence.create(
   nom: 'Barcelone',
   adresseip: '192.36.253.20',
   role: 'agence',
-  image: 'barcelone.jpg'
+  image: 'barcelone.jpg',
+  url: 'www.barcelone.cub.org'
 )
 
 Agence.create(
   nom: 'Californie',
   adresseip: '192.36.253.30',
   role: 'agence',
-  image: 'californie.jpg'
+  image: 'californie.jpg',
+  url: 'www.californie.cub.org'
 )
 
 Agence.create(
   nom: 'Dortmund',
   adresseip: '192.36.253.40',
   role: 'agence',
-  image: 'dortmund.jpg'
+  image: 'dortmund.jpg',
+  url: 'www.dortmund.cub.org'
 )
 
 Agence.create(
   nom: 'Edimbourg',
   adresseip: '192.36.253.50',
   role: 'agence',
-  image: 'edimbourg.png'
+  image: 'edimbourg.png',
+  url: 'www.edimbourg.cub.org'
 )
 
 Agence.create(
   nom: 'Frankfurt',
   adresseip: '192.36.253.60',
   role: 'agence',
-  image: 'frankfurt.jpg'
+  image: 'frankfurt.jpg',
+  url: 'www.frankfurt.cub.org'
 )
 
 Agence.create(
   nom: 'Galway',
   adresseip: '192.36.253.70',
   role: 'agence',
-  image: 'galway.jpg'
+  image: 'galway.jpg',
+  url: 'www.galway.cub.org'
 )
 
 Agence.create(
   nom: 'Hong-Kong',
   adresseip: '192.36.253.80',
   role: 'agence',
-  image: 'hongkong.jpg'
+  image: 'hongkong.jpg',
+  url: 'www.hongkong.cub.org'
 )
 
 Agence.create(
   nom: 'Siège (Paris)',
   adresseip: '192.36.253.254',
   role: 'siege',
-  image: 'siege.jpg'
+  image: 'siege.jpg',
+  url: 'www.cub.org'
 )
+
+# Continuez d'ajouter d'autres agences avec leurs URLs ici
+
 
 # Fonctions
 fonction_technicien = Fonction.create(libelle: 'Technicien')

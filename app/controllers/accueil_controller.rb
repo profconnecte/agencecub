@@ -2,6 +2,7 @@ class AccueilController < ApplicationController
   def index
     @ip_locale = recup_iplocale
     @agence_locale = determiner_agence_locale(@ip_locale)
+    @agences = Agence.all
   end
 
   protected

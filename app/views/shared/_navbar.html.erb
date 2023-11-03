@@ -1,11 +1,9 @@
-<header>
   <nav>
     <ul>
-      <li><strong>CUB</strong></li> <!-- "CUB" à gauche -->
+      <li><strong><%= link_to "CUB", root_path %></strong></li> <!-- "CUB" à gauche -->
       <div style="flex-grow: 1;"></div> <!-- Espace flexible pour pousser les éléments suivants à droite -->
-      <% @agences.each do |agence| %>
-        <li><%= link_to agence.nom, agence_path(agence) %></li>
+      <% @agences_nav.each do |agence_nav| %>
+        <li><%= link_to agence_nav.nom, agence_path(agence_nav) %></li>
       <% end %>
     </ul>
   </nav>
-</header>

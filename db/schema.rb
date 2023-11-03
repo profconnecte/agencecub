@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_03_104750) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_03_160934) do
   create_table "agences", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "nom"
     t.string "role"
@@ -18,6 +18,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_03_104750) do
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "url"
   end
 
   create_table "employes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

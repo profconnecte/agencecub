@@ -1,0 +1,13 @@
+<div class="container-agence">
+  <h2>L'agence de <%= @agence.nom %></h2>
+  <%= image_tag(@agence.image, class: "image") %>
+    <h3>Les employés de l'agence :</h3>
+  <ul>
+    <% @employes.each do |employe| %>
+      <li>
+        <strong><%= employe.prenom.capitalize %> <%= employe.nom.upcase %></strong> - <%= employe.fonction.libelle %>
+      </li>
+    <% end %>
+  </ul>
+  <h3>Visitez le site Web de cette agence : <%= link_to @agence.url, "https://"+@agence.url %></h3>
+</div>
