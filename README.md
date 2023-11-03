@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # README
 
 This README would normally document whatever steps are necessary to get the
@@ -26,4 +25,3 @@ Things you may want to cover:
 =======
 # agencecub
 Site Web pour les agences CUB sous Ruby on Rails
->>>>>>> 246d0f400f9cd433afa88fdd2b5314119e6fa21b
