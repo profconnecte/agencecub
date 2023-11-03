@@ -10,6 +10,12 @@
   </head>
 
   <body>
+    <% cache 'navbar' do %>
+      <%= render partial: "shared/navbar" %>
+    <% end %>
     <%= yield %>
+    <% cache 'footer' do %>
+      <%= render partial: "shared/footer" %>
+    <% end %>
   </body>
 </html>

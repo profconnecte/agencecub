@@ -1,0 +1,6 @@
+<% if @agence_locale.present? %>
+  <center><h2>Bienvenue dans l'agence de <%= @agence_locale.nom %></h2></center>
+<% else %>
+  <center><h2>Agence inconnue</h2></center>
+<% end %>
+<%= render partial: "accueil/cartes" %>

@@ -1,0 +1,12 @@
+  <main>
+    <div class="container">
+    <% @agences.each do |agence| %>
+        <div class="card">
+            <%= link_to agence_path(agence) do %>
+                <h3><%= agence.nom %></h3>
+                <%= image_tag(agence.image, class: "card-image") %>
+            <% end %>
+        </div>
+    <% end %>
+    </div>
+  </main>

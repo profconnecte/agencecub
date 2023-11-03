@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex; /* Utilisez un affichage flex pour aligner les éléments horizontalement */
+    align-items: center; /* Alignez verticalement les éléments au centre */
+  }
+  
+  nav ul li {
+    margin: 0 10px;
+  }
+  
+  nav ul li a {
+    color: white;
+  }
+
+main {
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.card {
+    width: 22%;
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.card-image {
+    max-width: 100%; /* La largeur maximale sera celle de la carte */
+    height: 150px; /* Fixez la hauteur des images à 150 pixels (ou la valeur de votre choix) */
+}
+
+
+.card:last-child {
+    margin-bottom: 60px; /* Ajoutez une marge en bas à la dernière carte pour éviter que le footer la recouvre */
+}  
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

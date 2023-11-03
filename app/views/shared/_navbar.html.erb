@@ -1,0 +1,11 @@
+<header>
+  <nav>
+    <ul>
+      <li><strong>CUB</strong></li> <!-- "CUB" à gauche -->
+      <div style="flex-grow: 1;"></div> <!-- Espace flexible pour pousser les éléments suivants à droite -->
+      <% @agences.each do |agence| %>
+        <li><%= link_to agence.nom, agence_path(agence) %></li>
+      <% end %>
+    </ul>
+  </nav>
+</header>
