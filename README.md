@@ -79,7 +79,7 @@ Dans un shell MySQL:
     bundle config set frozen true
 
 ### 12. Configuration de la base de données
-    echo 'export DATABASE_URL="mysql2://deploy:mot_de_passe@localhost/agencecub"' >> /etc/apache2/envvars
+    echo 'export DATABASE_URL="mysql2://deploy:mot_de_passe@localhost/agencecub"' | sudo tee -a /etc/apache2/envvars
     nano config/database.yml
 
 Assurez-vous que le section production correspond à ceci :
@@ -91,6 +91,7 @@ Puis
 
     rm config/credentials.yml.enc
     EDITOR=nano bin/rails credentials:edit
+    export DATABASE_URL="mysql2://deploy:mot_de_passe@localhost/agencecub"
     bundle exec rails assets:precompile db:migrate RAILS_ENV=production
     RAILS_ENV=production bundle exec rails db:seed
 
@@ -122,6 +123,7 @@ Placer dans ce fichier :
     </VirtualHost>
 
 Puis 
+
     sudo a2dissite 000-default.conf
     sudo a2ensite agencecub.conf
     sudo systemctl reload apache2
