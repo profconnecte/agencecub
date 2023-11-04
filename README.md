@@ -3,11 +3,38 @@
 # agencecub
 Site Web pour les agences CUB sous Ruby on Rails
 
-## Installation
+## Installation sur Ubuntu
 
 ### 1. Installation de ruby
     sudo apt-get update
+    sudo apt-get upgrade
     sudo apt-get install git-core zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev
+    sudo apt install ruby-full bundler
+
+### 2. Installation de node-js
+    sudo apt install nodejs npm
+    npm install -g yarn
+
+### 3. Installation de MySQL Server
+    sudo apt-get install mysql-server mysql-client libmysqlclient-dev
+
+### 4. Installation de phpmyadmin pour apache2
+    sudo apt install phpmyadmin
+
+## 5. Ajout d'un utilisateur admin dans MySQL
+    sudo mysql
+
+Puis dans la console mysql :
+
+    CREATE USER 'nom_utilisateur_choisi'@'localhost' IDENTIFIED BY 'mot_de_passe_solide';
+    GRANT ALL ON *.* TO 'nom_utilisateur_choisi'@'localhost' WITH GRANT OPTION;
+    FLUSH PRIVILEGES;
+    QUIT;
+
+### 6. Installation de rails
+    gem install rails -v 7.1.1
+
+
 
 # Installation
 Utilisation des sites [https://github.com/rubygems/rubygems/discussions/6760](https://github.com/rubygems/rubygems/discussions/6760) et [https://discuss.rubyonrails.org/t/cant-setup-rails-psych-yaml-issue/83968/2](https://discuss.rubyonrails.org/t/cant-setup-rails-psych-yaml-issue/83968/2)
