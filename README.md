@@ -83,9 +83,10 @@ Dans un shell MySQL:
     nano config/database.yml
 
 Assurez-vous que le section production correspond à ceci :
+```Bash
     production:
       url: <%= ENV['DATABASE_URL'] %>
-
+```
 Puis
 
     rm config/credentials.yml.enc
