@@ -11,6 +11,11 @@ Site Web pour les agences CUB sous Ruby on Rails
     sudo apt-get install git-core zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev
     sudo apt install ruby-full bundler
 
+Puis
+
+    echo 'export GEM_HOME=$HOME/.gem/ruby/3.1.0/' >> ~/.bashrc
+    source ~/.bashrc
+
 ### 2. Installation de node-js
     sudo apt install nodejs npm
     npm install -g yarn
@@ -21,7 +26,7 @@ Site Web pour les agences CUB sous Ruby on Rails
 ### 4. Installation de phpmyadmin pour apache2
     sudo apt install phpmyadmin
 
-## 5. Ajout d'un utilisateur admin dans MySQL
+### 5. Ajout d'un utilisateur admin dans MySQL
     sudo mysql
 
 Puis dans la console mysql :
@@ -34,30 +39,108 @@ Puis dans la console mysql :
 ### 6. Installation de rails
     gem install rails -v 7.1.1
 
+### 7. Création d'un utilisateur 'deploy'
+    sudo adduser deploy
+    sudo usermod -aG sudo deploy
+    su deploy
+    cd
+    echo 'export GEM_HOME=$HOME/.gem/ruby/3.1.0/' >> ~/.bashrc
+    source ~/.bashrc
 
+### 8. Création de la base de données et de l'utilisateur pour l'application
+Dans un shell MySQL:
 
-# Installation
-Utilisation des sites [https://github.com/rubygems/rubygems/discussions/6760](https://github.com/rubygems/rubygems/discussions/6760) et [https://discuss.rubyonrails.org/t/cant-setup-rails-psych-yaml-issue/83968/2](https://discuss.rubyonrails.org/t/cant-setup-rails-psych-yaml-issue/83968/2)
+    CREATE DATABASE IF NOT EXISTS agencecub;
+    CREATE USER IF NOT EXISTS 'deploy'@'localhost' IDENTIFIED BY 'mot_de_passe';
+    CREATE USER IF NOT EXISTS 'deploy'@'%' IDENTIFIED BY 'mot_de_passe';
+    GRANT ALL PRIVILEGES ON agencecub.* TO 'deploy'@'localhost';
+    GRANT ALL PRIVILEGES ON agencecub.* TO 'deploy'@'%';
+    FLUSH PRIVILEGES;
+    QUIT;
 
-## Installation des packages avec Bundle
-Pour définir une variable d'environnement, telle que GEM_HOME, de manière permanente à chaque démarrage de votre système, vous pouvez le faire en fonction de votre système d'exploitation. Voici comment faire cela sur Linux en utilisant un fichier de configuration de shell (comme .bashrc ou .bash_profile) :
+### 9. Installation de Passenger
+    sudo apt-get install -y libapache2-mod-passenger
+    sudo a2enmod passenger
+    sudo apache2ctl restart
 
-1. Ouvrez un terminal.
+### 10. Récupération de l'application
+    sudo mkdir /var/www/agencecub
+    sudo chown -R deploy:deploy /var/www/agencecub
+    cd /var/www/agencecub
+    git clone https://github.com/profconnecte/agencecub.git .
 
-2. Utilisez un éditeur de texte de votre choix pour ouvrir le fichier de configuration de shell correspondant à votre environnement. Par exemple, pour Bash, vous pouvez utiliser la commande suivante pour ouvrir le fichier .bashrc :
+### 11. Installation des dépendances de l'application
+    bundle config set --local deployment 'true'
+    bundle config set --local without 'development test'
+    gem update bundler
+    bundle install
+    bundle config set frozen false
+    bundle update
+    bundle config set frozen true
 
-`nano ~/.bashrc`
+### 12. Configuration de la base de données
+    echo 'export DATABASE_URL="mysql2://deploy:mot_de_passe@localhost/agencecub"' >> /etc/apache2/envvars
+    nano config/database.yml
 
-3. Ajoutez la ligne suivante à la fin du fichier de configuration, en remplaçant la valeur par le chemin de votre choix :
+Assurez-vous que le section production correspond à ceci :
+    production:
+      url: <%= ENV['DATABASE_URL'] %>
 
-`export GEM_HOME=$HOME/.gem/ruby/3.1.0/`
+Puis
+    nano config/environments/production.rb
 
-4. Enregistrez les modifications et fermez l'éditeur de texte. Dans Nano, vous pouvez appuyer sur Ctrl + O pour enregistrer, puis Ctrl + X pour quitter.
+Modifier la ligne `config.force_ssl = true` en `config.force_ssl = false`
 
-5. Pour rendre les modifications effectives sans avoir à redémarrer votre terminal, rechargez la configuration de votre shell en exécutant la commande suivante :
-    
-`source ~/.bashrc`
+Puis
 
-Maintenant, à chaque démarrage de votre terminal, la variable GEM_HOME sera automatiquement définie avec la valeur que vous avez spécifiée.
+    rm config/credentials.yml.enc
+    EDITOR=nano bin/rails credentials:edit
+    bundle exec rails assets:precompile db:migrate RAILS_ENV=production
+    RAILS_ENV=production bundle exec rails db:seed
 
-Si vous utilisez un autre shell (comme Zsh, Fish, etc.), le processus peut être légèrement différent, mais l'idée générale reste la même : ajoutez la variable d'environnement dans le fichier de configuration correspondant au shell que vous utilisez.
+## Configuration d'Apache et Passenger
+### 1. Déterminer la commande ruby à utiliser
+    passenger-config about ruby-command
+
+## 2. Création du fichier de configuration de l'hôte virtuel dans Apache
+    sudo nano /etc/apache2/sites-available/agencecub.conf
+
+Placer dans ce fichier :
+
+    <VirtualHost *:80>
+        ServerName www.anvers.cub.org
+
+        # Tell Apache and Passenger where your app's 'public' directory is
+        DocumentRoot /var/www/agencecub/public
+
+        ErrorLog ${APACHE_LOG_DIR}/agencecub_error.log
+        CustomLog ${APACHE_LOG_DIR}/agencecub_access.log combined
+
+        PassengerRuby /usr/bin/ruby3.1
+
+        # Relax Apache security settings
+        <Directory /var/www/agencecub/public>
+        Allow from all
+        Options -MultiViews
+        # Uncomment this if you're on Apache ≥ 2.4:
+        Require all granted
+        </Directory>
+    </VirtualHost>
+
+Puis 
+    sudo a2dissite 000-default.conf
+    sudo a2ensite agencecub.conf
+    sudo systemctl reload apache2
+
+## Tests
+Tester l'accès avec curl : `curl http://www.anvers.cub.org` puis avec firefox.
+
+## Sources
+### Déploiement :
+- [https://gorails.com/deploy/ubuntu/22.04](https://gorails.com/deploy/ubuntu/22.04)
+- [https://www.phusionpassenger.com/docs/tutorials/deploy_to_production/deploying_your_app/oss/ownserver/ruby/apache/](https://www.phusionpassenger.com/docs/tutorials/deploy_to_production/deploying_your_app/oss/ownserver/ruby/apache/)
+
+### Correction des Problèmes :
+Utilisation des sites :
+- [https://github.com/rubygems/rubygems/discussions/6760](https://github.com/rubygems/rubygems/discussions/6760)
+- [https://discuss.rubyonrails.org/t/cant-setup-rails-psych-yaml-issue/83968/2](https://discuss.rubyonrails.org/t/cant-setup-rails-psych-yaml-issue/83968/2)
