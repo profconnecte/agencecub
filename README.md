@@ -133,7 +133,7 @@ Puis
 Enfin on enlève l'utilisateur deploy du groupe sudo : `sudo deluser deploy sudo`
 
 ## Tests
-Tester l'accès avec curl : `curl http://www.anvers.cub.org` puis avec firefox.
+Tester l'accès avec curl : `curl http://www.anvers.cub.org` puis avec firefox en mode navigation privé si vous constatez un problème.
 
 ## Sources
 ### Déploiement :
