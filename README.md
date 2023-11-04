@@ -110,7 +110,6 @@ Placer dans ce fichier :
     <VirtualHost *:80>
         ServerName www.anvers.cub.org
 
-        # Tell Apache and Passenger where your app's 'public' directory is
         DocumentRoot /var/www/agencecub/public
 
         ErrorLog ${APACHE_LOG_DIR}/agencecub_error.log
@@ -118,7 +117,6 @@ Placer dans ce fichier :
 
         PassengerRuby /usr/bin/ruby3.1
 
-        # Relax Apache security settings
         <Directory /var/www/agencecub/public>
         Allow from all
         Options -MultiViews
@@ -131,6 +129,8 @@ Puis
     sudo a2dissite 000-default.conf
     sudo a2ensite agencecub.conf
     sudo systemctl reload apache2
+
+Enfin on enlève l'utilisateur deploy du groupe sudo : `sudo deluser deploy sudo`
 
 ## Tests
 Tester l'accès avec curl : `curl http://www.anvers.cub.org` puis avec firefox.
