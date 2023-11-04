@@ -87,11 +87,6 @@ Assurez-vous que le section production correspond à ceci :
       url: <%= ENV['DATABASE_URL'] %>
 
 Puis
-    nano config/environments/production.rb
-
-Modifier la ligne `config.force_ssl = true` en `config.force_ssl = false`
-
-Puis
 
     rm config/credentials.yml.enc
     EDITOR=nano bin/rails credentials:edit
