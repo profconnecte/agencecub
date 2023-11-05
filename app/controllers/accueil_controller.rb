@@ -19,6 +19,7 @@ class AccueilController < ApplicationController
   end
 
   def determiner_agence_locale(ip)
+    ip = ENV['IP_HOTE']
     case ip
     when /^172\.16\.1/
       Agence.find_by(nom: 'Anvers')
