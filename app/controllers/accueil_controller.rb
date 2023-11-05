@@ -20,23 +20,23 @@ class AccueilController < ApplicationController
 
   def determiner_agence_locale(ip)
     case ip
-    when /^172\.16\.1/
+    when /^172\.16\.1\./
       Agence.find_by(nom: 'Anvers')
-    when /^172\.16\.2/
+    when /^172\.16\.2\./
       Agence.find_by(nom: 'Barcelone')
-    when /^172\.16\.3/
+    when /^172\.16\.3\./
       Agence.find_by(nom: 'Californie')
-    when /^172\.16\.4/
+    when /^172\.16\.4\./
       Agence.find_by(nom: 'Dortmund')
-    when /^172\.16\.5/
+    when /^172\.16\.5\./
       Agence.find_by(nom: 'Edimbourg')
-    when /^172\.16\.6/
+    when /^172\.16\.6\./
       Agence.find_by(nom: 'Frankfurt')
-    when /^172\.16\.7/
+    when /^172\.16\.7\./
       Agence.find_by(nom: 'Galway')
-    when /^172\.16\.8/
+    when /^172\.16\.8\./
       Agence.find_by(nom: 'Hong-Kong')
-    when /^172\.16\.250/
+    when /^172\.16\.250\./
       Agence.where("nom LIKE ?", "%siège%").first
     else
       nil # Renvoie nil si aucune correspondance n'est trouvée
