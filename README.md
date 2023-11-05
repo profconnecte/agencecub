@@ -9,12 +9,7 @@ Site Web pour les agences CUB sous Ruby on Rails
     sudo apt-get update
     sudo apt-get upgrade
     sudo apt-get install git-core zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev software-properties-common libffi-dev
-    sudo apt install ruby-full bundler
-
-Puis
-
-    echo 'export GEM_HOME=$HOME/.gem/ruby/3.1.0/' >> ~/.bashrc
-    source ~/.bashrc
+    sudo apt install ruby-full ruby-bundler
 
 ### 2. Installation de node-js
     sudo apt install nodejs npm
@@ -36,18 +31,15 @@ Puis dans la console mysql :
     FLUSH PRIVILEGES;
     QUIT;
 
-### 6. Installation de rails
-    gem install rails -v 7.1.1
-
-### 7. Création d'un utilisateur 'deploy'
+### 6. Création d'un utilisateur 'deploy'
     sudo adduser deploy
     sudo usermod -aG sudo deploy
-    su deploy
+    sudo -u deploy -H bash -l
     cd
-    echo 'export GEM_HOME=$HOME/.gem/ruby/3.1.0/' >> ~/.bashrc
+    echo 'export DATABASE_URL="mysql2://deploy:mot_de_passe@localhost/agencecub"' >> ~/.bashrc
     source ~/.bashrc
 
-### 8. Création de la base de données et de l'utilisateur pour l'application
+### 7. Création de la base de données et de l'utilisateur pour l'application
 Dans un shell MySQL:
 
     CREATE DATABASE IF NOT EXISTS agencecub;
@@ -58,40 +50,26 @@ Dans un shell MySQL:
     FLUSH PRIVILEGES;
     QUIT;
 
-### 9. Installation de Passenger
+### 8. Installation de Passenger
     sudo apt-get install -y libapache2-mod-passenger
     sudo a2enmod passenger
     sudo apache2ctl restart
 
-### 10. Récupération de l'application
+### 9. Récupération de l'application
     sudo mkdir /var/www/agencecub
     sudo chown -R deploy:deploy /var/www/agencecub
     cd /var/www/agencecub
     git clone https://github.com/profconnecte/agencecub.git .
 
-### 11. Installation des dépendances de l'application
+### 10. Installation des dépendances de l'application
     bundle config set --local deployment 'true'
     bundle config set --local without 'development test'
-    gem update bundler
     bundle install
-    bundle config set frozen false
-    bundle update
-    bundle config set frozen true
 
-### 12. Configuration de la base de données
+### 11. Configuration de la base de données
     echo 'export DATABASE_URL="mysql2://deploy:mot_de_passe@localhost/agencecub"' | sudo tee -a /etc/apache2/envvars
-    nano config/database.yml
-
-Assurez-vous que le section production correspond à ceci :
-```Bash
-    production:
-      url: <%= ENV['DATABASE_URL'] %>
-```
-Puis
-
     rm config/credentials.yml.enc
     EDITOR=nano bin/rails credentials:edit
-    export DATABASE_URL="mysql2://deploy:mot_de_passe@localhost/agencecub"
     bundle exec rails assets:precompile db:migrate RAILS_ENV=production
     RAILS_ENV=production bundle exec rails db:seed
 
@@ -112,7 +90,8 @@ Placer dans ce fichier :
         ErrorLog ${APACHE_LOG_DIR}/agencecub_error.log
         CustomLog ${APACHE_LOG_DIR}/agencecub_access.log combined
 
-        PassengerRuby /usr/bin/ruby3.1
+        PassengerRuby /usr/bin/ruby
+        PassengerPreloadBundler on
 
         <Directory /var/www/agencecub/public>
         Allow from all
@@ -126,7 +105,7 @@ Puis
 
     sudo a2dissite 000-default.conf
     sudo a2ensite agencecub.conf
-    sudo systemctl reload apache2
+    sudo systemctl restart apache2
 
 Enfin on enlève l'utilisateur deploy du groupe sudo : `sudo deluser deploy sudo`
 
