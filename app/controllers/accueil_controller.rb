@@ -1,6 +1,6 @@
 class AccueilController < ApplicationController
   def index
-    @ip_locale = recup_iplocale
+    @ip_locale = ENV['IP_HOTE'] || recup_iplocale
     @agence_locale = determiner_agence_locale(@ip_locale)
     @agences = Agence.all
   end
@@ -19,7 +19,6 @@ class AccueilController < ApplicationController
   end
 
   def determiner_agence_locale(ip)
-    ip = ENV['IP_HOTE']
     case ip
     when /^172\.16\.1/
       Agence.find_by(nom: 'Anvers')
