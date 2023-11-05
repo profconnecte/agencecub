@@ -13,7 +13,7 @@ Site Web pour les agences CUB sous Ruby on Rails
 
 ### 2. Installation de node-js
     sudo apt install nodejs npm
-    npm install -g yarn
+    sudo npm install -g yarn
 
 ### 3. Installation de MySQL Server
     sudo apt-get install mysql-server mysql-client libmysqlclient-dev
@@ -69,7 +69,7 @@ Dans un shell MySQL:
 ### 11. Configuration de la base de données
     echo 'export DATABASE_URL="mysql2://deploy:mot_de_passe@localhost/agencecub"' | sudo tee -a /etc/apache2/envvars
     rm config/credentials.yml.enc
-    EDITOR=nano bin/rails credentials:edit
+    EDITOR=nano bin/rails credentials:edit --environment production
     bundle exec rails assets:precompile db:migrate RAILS_ENV=production
     RAILS_ENV=production bundle exec rails db:seed
 
