@@ -35,7 +35,7 @@ class AccueilController < ApplicationController
     when /^172\.16\.7/
       Agence.find_by(nom: 'Galway')
     when /^172\.16\.8/
-      Agence.find_by(nom: 'Hong Kong')
+      Agence.find_by(nom: 'Hong-Kong')
     when /^172\.16\.250/
       Agence.where("nom LIKE ?", "%siège%").first
     else
